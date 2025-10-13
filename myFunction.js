@@ -1,5 +1,5 @@
 function myFunction(a, b) {
-  return a + b;
+  return b+a;
 }
 
 export default myFunction;
