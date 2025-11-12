@@ -1,3 +1,4 @@
+'use client';
 import { ListItem, Table, TableContainer } from '@mui/material';
 
 export default function PageContent({ children }) {

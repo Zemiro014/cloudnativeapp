@@ -14,7 +14,7 @@ export default function Layout({ children }) {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Box sx={{ flexGrow: 1 }}>
+            <Box>
                 <Header menuItems={menuContent} />
                 <Body>{children}</Body>
             </Box>
