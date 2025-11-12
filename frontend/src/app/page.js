@@ -1,17 +1,11 @@
-import Head from "next/head";
+import { Typography } from '@mui/material';
 
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>Cloud Native App</title>
-        <meta name="description" content="A simple Next.js application" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>
-        <p />
-        <h1>Welcome Cloud Native App!</h1>
-      </main>
+      <Typography component="h4" variant="h4">
+        Welcome to Cloud Native App!
+      </Typography>
     </div>
   );
 }
