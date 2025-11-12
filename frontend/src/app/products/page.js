@@ -24,22 +24,40 @@ export default function Products() {
         setProducts(productsList);
     };
 
+    const createProduct = async () => {
+        alert('createProduct()');
+    };
+
+    const editProduct = async (id) => {
+        alert(`editProduct(): ${id}`);
+    };
+
+    const deleteProduct = async (id) => {
+        alert(`deleteProduct(): ${id}`);
+    };
+
     useEffect(() => {
         getProducts();
     }, []);
 
     return (
         <List>
-            <PageHeader pageLabel={pageLabel}></PageHeader>
+            <PageHeader pageLabel={pageLabel}>
+                <PageActions createProduct={createProduct} />
+            </PageHeader>
             <PageContent>
                 <PageContentLabels labels={itemsLabels} />
-                <PageContentItems products={products} />
+                <PageContentItems 
+                    products={products}
+                    editProduct={editProduct}
+                    deleteProduct={deleteProduct}
+                 />
             </PageContent>
         </List>
     );
 }
 
-function PageContentItems({ products }) {
+function PageContentItems({ products, editProduct, deleteProduct }) {
     return (
         <TableBody>
             {products.map((product) => (
@@ -50,8 +68,50 @@ function PageContentItems({ products }) {
                     <TableCell>{product.category}</TableCell>
                     <TableCell>{product.count}</TableCell>
                     <TableCell>{product.rating}</TableCell>
+                    <PageContentActions
+                        id={product.id}
+                        editProduct={editProduct}
+                        deleteProduct={deleteProduct}
+                    />
                 </TableRow>
             ))}
         </TableBody>
+    );
+}
+
+function PageActions({ createProduct }) {
+    return (
+        <Button
+            color="primary"
+            variant="contained"
+            onClick={() => createProduct()}
+        >
+            Create
+        </Button>
+    );
+}
+
+function PageContentActions({ id, editProduct, deleteProduct}) {
+    return (
+        <>
+            <TableCell>
+                <Button
+                    size="small"
+                    variant="contained"
+                    onClick={() => editProduct(id)}
+                >
+                    Edit
+                </Button>
+            </TableCell>
+            <TableCell>
+                <Button
+                    size="small"
+                    variant="contained"
+                    onClick={() => deleteProduct(id)}
+                >
+                    Delete
+                </Button>
+            </TableCell>
+        </>
     );
 }

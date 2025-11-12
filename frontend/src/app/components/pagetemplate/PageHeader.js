@@ -2,7 +2,10 @@ import { Grid, ListItem, Typography } from '@mui/material';
 export default function PageHeader({ pageLabel, children }) {
     return (
         <ListItem>
-            <Grid container alignItems="center" justifyContent="space-between">
+            <Grid 
+                container
+                sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between' }}
+            >
                 <Grid>
                     <Typography component="h4" variant="h4">
                         {pageLabel}
