@@ -9,14 +9,11 @@ import TableRow from '@mui/material/TableRow';
 import PageHeader from '../components/pagetemplate/PageHeader';
 import PageContent from '../components/pagetemplate/PageContent';
 import PageContentLabels from '../components/pagetemplate/PageContentLabels';
+import { deleteData, getData } from '../../../middlewares/data';
 
 const pageLabel = 'Products';
 const itemsLabels = ['Id','Name','Price','Category','Count',
 'Rating','Actions',];
-const productsList = [
-{ name: 'P1', price: 1, category: 'C1', count: 1, rating: 1, id: 1 },
-{ name: 'P2', price: 2, category: 'C2', count: 2, rating: 2, id: 2 },
-];
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -24,7 +21,13 @@ export default function Products() {
     const router = useRouter();
 
     const getProducts = async () => {
-        setProducts(productsList);
+        try {
+            const jsonData = await getData('products');
+            console.log("AQUII: "+jsonData);
+            setProducts(jsonData);
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
     const createProduct = async () => {
@@ -40,10 +43,16 @@ export default function Products() {
     };
 
     const deleteProduct = async (id) => {
-        alert(`deleteProduct(): ${id}`);
+        try {
+            await deleteData('products', id);
+            setProducts(products.filter((product) => product.id !== id));
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
     useEffect(() => {
+        console.log("USE EFFECT. HOST: "+process.env.HOST+" PORT: "+process.env.PORT);
         getProducts();
     }, []);
 

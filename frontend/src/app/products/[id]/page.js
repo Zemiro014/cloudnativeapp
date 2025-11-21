@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import List from '@mui/material/List';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import PageHeader from '../../components/pagetemplate/PageHeader';
 import PageContent from '../../components/pagetemplate/PageContent';
 import { ControllerTextField } from '../../components/ControllerTextField';
+import { getData, postData, putData } from '../../../../middlewares/data';
 
 const pageLabel = 'Edit Product';
 
@@ -36,15 +37,34 @@ export default function Product() {
 
         try {
             if (id === '-1') {
-                alert('insert new product!')
+                await postData('products', body);
             } else {
-                alert(`update existing product!`)
+               await putData('products', id, body);
             }
         router.back();
         } catch (error) {
             console.error(error.message);
         }
     };
+
+    useEffect(() => {
+        if (id !== undefined && id !== '-1') {
+            const fetchData = async () => {
+                const data = await getData(`products/${id}`);
+                try {
+                    setValue('name', data.name);
+                    setValue('price', data.price);
+                    setValue('category', data.category);
+                    setValue('count', data.count);
+                    setValue('rating', data.rating);
+                } catch (error) {
+                    console.error(error.message);
+                }
+            };
+            fetchData();
+        }
+    }, [id, setValue]);
+
     return (
         <List>
             <PageHeader pageLabel={pageLabel} />
