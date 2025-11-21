@@ -1,0 +1,18 @@
+{
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "**/src/*/*/*.{js,jsx,ts,tsx}",
+    "!**/node_modules",
+    "!**/coverage/**",
+    "!**/build/**",
+    "!**/test/**"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 0,
+      "functions": 0,
+      "lines": 0,
+      "statements": 0
+    }
+  }
+}
