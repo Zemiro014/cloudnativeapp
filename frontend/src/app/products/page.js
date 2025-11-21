@@ -10,10 +10,36 @@ import PageHeader from '../components/pagetemplate/PageHeader';
 import PageContent from '../components/pagetemplate/PageContent';
 import PageContentLabels from '../components/pagetemplate/PageContentLabels';
 import { deleteData, getData } from '../../../middlewares/data';
+import PropTypes from 'prop-types';
 
 const pageLabel = 'Products';
 const itemsLabels = ['Id','Name','Price','Category','Count',
 'Rating','Actions',];
+
+PageContentItems.propTypes = {
+    products: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            name: PropTypes.string,
+            price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            category: PropTypes.string,
+            count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            rating: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        })
+    ).isRequired,
+    editProduct: PropTypes.func.isRequired,
+    deleteProduct: PropTypes.func.isRequired,
+};
+
+PageActions.propTypes = {
+    createProduct: PropTypes.func.isRequired,
+};
+
+PageContentActions.propTypes = {
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    editProduct: PropTypes.func.isRequired,
+    deleteProduct: PropTypes.func.isRequired,
+};
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -23,7 +49,6 @@ export default function Products() {
     const getProducts = async () => {
         try {
             const jsonData = await getData('products');
-            console.log("AQUII: "+jsonData);
             setProducts(jsonData);
         } catch (error) {
             console.error(error.message);
@@ -52,7 +77,6 @@ export default function Products() {
     };
 
     useEffect(() => {
-        console.log("USE EFFECT. HOST: "+process.env.HOST+" PORT: "+process.env.PORT);
         getProducts();
     }, []);
 
@@ -106,7 +130,6 @@ function PageActions({ createProduct }) {
         </Button>
     );
 }
-
 function PageContentActions({ id, editProduct, deleteProduct}) {
     return (
         <>
