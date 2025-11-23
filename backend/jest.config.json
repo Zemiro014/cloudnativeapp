@@ -1,7 +1,9 @@
 {
   "collectCoverage": true,
   "collectCoverageFrom": [
-    "**/src/*/*/*.{js,jsx,ts,tsx}",
+    "**/src/**/*.js",
+    "!**/src/*.js",
+    "!**/src/database/**",
     "!**/node_modules",
     "!**/coverage/**",
     "!**/build/**",

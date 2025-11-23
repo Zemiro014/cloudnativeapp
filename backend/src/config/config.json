@@ -5,6 +5,13 @@
   },
   "test": {
     "storage": "cloud_native_app.db",
-    "dialect": "sqlite"
+    "dialect": "sqlite",
+    "logging": false
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "storage": "cloud_native_app.db",
+    "dialect": "sqlite",
+    "logging": false
   }
 }
