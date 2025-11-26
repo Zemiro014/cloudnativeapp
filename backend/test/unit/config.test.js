@@ -1,5 +1,5 @@
 const fs = require('fs');
-const config = require('../../src/utils/config');
+const config = require('../../src/utils/envConfig');
 
 jest.mock('dotenv');
 jest.mock('fs');

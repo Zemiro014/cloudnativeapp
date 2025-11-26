@@ -1,0 +1,33 @@
+2025-11-23 11:30:31 [INFO]: This is an info message 
+2025-11-26 15:18:15 [INFO]: This is an info message 
+2025-11-26 15:19:11 [INFO]: This is an info message 
+2025-11-26 15:27:57 [INFO]: Server is running on port 3001 
+2025-11-26 15:33:57 [INFO]: Server is running on port 3001 
+2025-11-26 15:34:16 [INFO]: ::1 - - [26/Nov/2025:18:34:16 +0000] "GET /products HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+ 
+2025-11-26 15:46:57 [INFO]: This is an info message 
+2025-11-26 15:46:57 [INFO]: This is a log info level 
+2025-11-26 15:46:57 [WARNING]: This is a log warning level 
+2025-11-26 15:46:57 [ERROR]: This is a log error level 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "GET / HTTP/1.1" 200 30 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "GET /products HTTP/1.1" 200 2 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "GET /invalid-route HTTP/1.1" 404 152 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "GET /products/999 HTTP/1.1" 404 31 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "POST /products HTTP/1.1" 201 178 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "POST /products HTTP/1.1" 400 37 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "DELETE /products/2 HTTP/1.1" 200 42 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "GET /products?name=Unique%20Product HTTP/1.1" 200 170 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "GET /products?category=Electronics&minPrice=5&maxPrice=25&minRating=4 HTTP/1.1" 200 2 "-" "-"
+ 
+2025-11-26 15:46:57 [INFO]: ::ffff:127.0.0.1 - - [26/Nov/2025:18:46:57 +0000] "PUT /products/7 HTTP/1.1" 200 179 "-" "-"
+ 
+2025-11-26 15:51:47 [WARNING]: This is a log warning level 
+2025-11-26 15:51:47 [ERROR]: This is a log error level 
