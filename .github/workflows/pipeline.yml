@@ -29,3 +29,16 @@ jobs:
         with:
           name: build
           path: frontend/.next
+  test:
+   needs: build
+   runs-on: ubuntu-latest
+   steps:
+    - name: Run App tests
+      run: echo "Tests go here"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+     - name: Deploy App Frontend
+       run: echo "Deploy Frontend here"
