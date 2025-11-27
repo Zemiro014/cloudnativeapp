@@ -21,16 +21,25 @@ jobs:
         run: npm --prefix backend install
 
       - name: Install Frontend Dependencies
-        working-directory: frontend
-        run: npm install
+        run: |
+          cd frontend
+          npm install
       - name: Build Frontend
         working-directory: frontend
-        run: npm run build
+        run: |
+          cd frontend
+          npm run build
+      - name: Create artifact directory (optional, for clarity)
+        run: |
+          mkdir -p nextjs-artifact
+          cp -r frontend/.next frontend/package.json frontend/next.config.js frontend/node_modules nextjs-artifact/
+          # Copy necessary files for a standalone deployment. For static export use "out" folder.
+
       - name: Upload Frontend Build
         uses: actions/upload-artifact@v4
         with:
-         name: frontend-build
-         path: frontend/.next
+         name: nextjs-build-artifact
+         path: nextjs-artifact/
 
   test:
    needs: build
