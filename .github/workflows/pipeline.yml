@@ -1,0 +1,11 @@
+name: pipeline
+on:
+    push:
+        branches: [main]
+    
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Example Step
+            run: echo "This is an example step in the pipeline."
