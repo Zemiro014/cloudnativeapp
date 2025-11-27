@@ -21,14 +21,17 @@ jobs:
         run: npm --prefix backend install
 
       - name: Install Frontend Dependencies
-        run: npm --prefix frontend install
+        working-directory: frontend
+        run: npm install
       - name: Build Frontend
-        run: npm --prefix frontend run build
-      - name: Upload Frontend Build Artifacts
+        working-directory: frontend
+        run: npm run build
+      - name: Upload Frontend Build
         uses: actions/upload-artifact@v4
         with:
-          name: nextjs-build-artifact
-          path: frontend/.next
+         name: frontend-build
+         path: frontend/.next
+
   test:
    needs: build
    runs-on: ubuntu-latest
