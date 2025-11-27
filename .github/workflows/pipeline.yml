@@ -21,8 +21,10 @@ jobs:
         run: npm --prefix backend install
 
       - name: Install Frontend Dependencies
+        working-directory: frontend
         run: npm --prefix frontend install
       - name: Build Frontend
+        working-directory: frontend
         run: npm --prefix frontend run build
       - name: Upload Frontend Build Artifacts
         uses: actions/upload-artifact@v4
