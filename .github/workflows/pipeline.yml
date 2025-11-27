@@ -27,5 +27,5 @@ jobs:
       - name: Upload Frontend Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: frontend/build
+          name: build
+          path: frontend/.next
