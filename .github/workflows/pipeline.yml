@@ -8,5 +8,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Example Step
-        run: echo "This is an example step in the pipeline."
+      - name: Get Source Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Backend Dependencies
+        run: npm --prefix backend install
+
+      - name: Install Frontend Dependencies
+        run: npm --prefix frontend install
+      - name: Build Frontend
+        run: npm --prefix frontend run build
+      - name: Upload Frontend Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: frontend/build
