@@ -27,8 +27,8 @@ jobs:
       - name: Upload Frontend Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build
-          path: frontend/.next/dev
+          name: frontend-build
+          path: frontend/.next
   test:
    needs: build
    runs-on: ubuntu-latest
