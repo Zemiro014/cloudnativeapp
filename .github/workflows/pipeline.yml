@@ -31,7 +31,7 @@ jobs:
       - name: Create artifact directory (optional, for clarity)
         run: |
           mkdir -p nextjs-artifact
-          cp -r frontend/.next frontend/package.json frontend/next.config.js frontend/node_modules nextjs-artifact/
+          cp -r frontend/.next frontend/package.json frontend/next.config.mjs frontend/node_modules nextjs-artifact/
           # Copy necessary files for a standalone deployment. For static export use "out" folder.
 
       - name: Upload Frontend Build
