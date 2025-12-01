@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const logger = require('../../src/utils/logger');
 
 test('Test logger call', () => {

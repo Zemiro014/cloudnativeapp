@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { TableCell, TableHead, TableRow } from '@mui/material';
 
 export default function PageContentLabels({ labels }) {

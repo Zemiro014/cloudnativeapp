@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     /**
@@ -13,16 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Product.init({
-    name: DataTypes.STRING,
-    price: DataTypes.NUMBER,
-    category: DataTypes.STRING,
-    count: DataTypes.INTEGER,
-    rating: DataTypes.NUMBER
-  }, {
-    sequelize,
-    modelName: 'Product',
-    freezeTableName: true,
-  });
+  Product.init(
+    {
+      name: DataTypes.STRING,
+      price: DataTypes.NUMBER,
+      category: DataTypes.STRING,
+      count: DataTypes.INTEGER,
+      rating: DataTypes.NUMBER,
+    },
+    {
+      sequelize,
+      modelName: 'Product',
+      tableName: 'Products',
+    },
+  );
   return Product;
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import '@testing-library/jest-dom';
 import Home from '@/app/page';
 import { render, screen } from '@testing-library/react';

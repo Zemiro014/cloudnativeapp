@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const supertest = require('supertest');
 const app = require('../../src/app');
 const request = supertest(app);
@@ -12,30 +13,30 @@ beforeEach(async () => {
   await Product.destroy({ where: {} });
 });
 
-test("Get product", async () => {
+test('Get product', async () => {
   const response = await request.get('/products');
   expect(response.status).toBe(200);
   expect(response.body).toEqual([]);
 });
 
-test("Get products - invalid route", async () => {
+test('Get products - invalid route', async () => {
   const response = await request.get('/invalid-route');
   expect(response.status).toBe(404);
 });
 
-test("Get product by ID - not found", async () => {
+test('Get product by ID - not found', async () => {
   const response = await request.get('/products/999');
   expect(response.status).toBe(404);
   expect(response.body.message).toBe('Product not found');
 });
 
-test("Create product", async () => {
+test('Create product', async () => {
   const newProduct = {
-    name: "Sample Product",
+    name: 'Sample Product',
     price: 19.99,
-    category: "Sample Category",
+    category: 'Sample Category',
     count: 100,
-    rating: 4.5
+    rating: 4.5,
   };
 
   const response = await request.post('/products').send(newProduct);
@@ -47,23 +48,23 @@ test("Create product", async () => {
   expect(response.body.rating).toBe(newProduct.rating);
 });
 
-test("Create product - missing fields", async () => {
+test('Create product - missing fields', async () => {
   const incompleteProduct = {
-    name: "Incomplete Product",
-    price: 9.99
+    name: 'Incomplete Product',
+    price: 9.99,
   };
 
   const response = await request.post('/products').send(incompleteProduct);
   expect(response.status).toBe(400);
 });
 
-test("Delete product - success", async () => {
+test('Delete product - success', async () => {
   const newProduct = await Product.create({
-    name: "Product to Delete",
+    name: 'Product to Delete',
     price: 29.99,
-    category: "Category",
+    category: 'Category',
     count: 50,
-    rating: 3.5
+    rating: 3.5,
   });
 
   const response = await request.delete(`/products/${newProduct.id}`);
@@ -71,45 +72,47 @@ test("Delete product - success", async () => {
   expect(response.body.message).toBe('Product deleted successfully');
 });
 
-test("Search product by name", async () => {
-  const productName = "Unique Product";
+test('Search product by name', async () => {
+  const productName = 'Unique Product';
   await Product.create({
     name: productName,
     price: 39.99,
-    category: "Category",
+    category: 'Category',
     count: 20,
-    rating: 4.0
+    rating: 4.0,
   });
 
-  const response = await request.get(`/products?name=${encodeURIComponent(productName)}`);
+  const response = await request.get(
+    `/products?name=${encodeURIComponent(productName)}`,
+  );
   expect(response.status).toBe(200);
   expect(response.body.length).toBe(1);
   expect(response.body[0].name).toBe(productName);
 });
 
-test("Search product by category, price range, and rating", async () => {
+test('Search product by category, price range, and rating', async () => {
   const products = [
     {
-      name: "Product A",
-      price: 10.00,
-      category: "Electronics",
+      name: 'Product A',
+      price: 10.0,
+      category: 'Electronics',
       count: 15,
-      rating: 4.2
+      rating: 4.2,
     },
     {
-      name: "Product B",
-      price: 20.00,
-      category: "Electronics",
+      name: 'Product B',
+      price: 20.0,
+      category: 'Electronics',
       count: 25,
-      rating: 3.8
+      rating: 3.8,
     },
     {
-      name: "Product C",
-      price: 30.00,
-      category: "Books",
+      name: 'Product C',
+      price: 30.0,
+      category: 'Books',
       count: 5,
-      rating: 4.5
-    }
+      rating: 4.5,
+    },
   ];
 
   // Limpa antes (evita interferência de outros testes)
@@ -121,7 +124,7 @@ test("Search product by category, price range, and rating", async () => {
   }
 
   const response = await request.get(
-    '/products?category=Electronics&minPrice=5&maxPrice=25&minRating=4'
+    '/products?category=Electronics&minPrice=5&maxPrice=25&minRating=4',
   );
 
   expect(response.status).toBe(200);
@@ -137,24 +140,26 @@ test("Search product by category, price range, and rating", async () => {
   // expect(result.rating).toBeCloseTo(4.2, 1);
 });
 
-test("Update product - success", async () => {
+test('Update product - success', async () => {
   const product = await Product.create({
-    name: "Product to Update",
+    name: 'Product to Update',
     price: 49.99,
-    category: "Category",
+    category: 'Category',
     count: 30,
-    rating: 2.5
+    rating: 2.5,
   });
 
   const updatedData = {
-    name: "Updated Product",
+    name: 'Updated Product',
     price: 59.99,
-    category: "Updated Category",
+    category: 'Updated Category',
     count: 40,
-    rating: 4.5
+    rating: 4.5,
   };
 
-  const response = await request.put(`/products/${product.id}`).send(updatedData);
+  const response = await request
+    .put(`/products/${product.id}`)
+    .send(updatedData);
   expect(response.status).toBe(200);
   expect(response.body.name).toBe(updatedData.name);
   expect(response.body.price).toBe(updatedData.price);

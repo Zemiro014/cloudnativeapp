@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const fs = require('fs');
 const config = require('../../src/utils/envConfig');
 
@@ -9,7 +10,7 @@ describe('Config Utility test', () => {
     jest.resetAllMocks();
   });
 
-test('Define NODE_ENV as default value', async () => {
+  test('Define NODE_ENV as default value', async () => {
     fs.existsSync.mockReturnValueOnce(true);
     delete process.env.NODE_ENV;
     config.loadConfig();
@@ -23,5 +24,4 @@ test('Define NODE_ENV as default value', async () => {
       config.loadConfig();
     }).toThrow(Error);
   });
-
 });

@@ -1,4 +1,4 @@
-version: "3.9"
+version: "2.2"
 
 services:
   backend:
@@ -7,26 +7,35 @@ services:
     ports:
       - "3001:3000"
     environment:
-      DB_HOST: db
+      NODE_ENV: production
       DB_USER: root
       DB_PASS: root
+      DB_HOST: my-db
+      DB_PORT: 3306
       DB_NAME: ecommerce
+    command: sh -c "npm run db:migrate && npm start"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    # entrypoint: ["./docker-entrypoint.sh"]
 
-  frontend:
-    build: ./frontend
-    container_name: my-frontend
-    ports:
-      - "3000:3000"
-    environment:
-      NEXT_PUBLIC_BACKEND_URL: http://localhost:3001
+  # frontend:
+  #   build: ./frontend
+  #   container_name: my-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     NEXT_PUBLIC_BACKEND_URL: http://localhost:3001
 
   db:
     image: mysql:8.0
     container_name: my-db
     ports:
-      - "3306:3306"
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ecommerce

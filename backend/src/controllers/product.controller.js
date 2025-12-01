@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const Product = require('../models').Product;
 
 exports.getProductById = async (req, resp) => {
@@ -11,23 +12,39 @@ exports.getProductById = async (req, resp) => {
     }
   } catch (error) {
     console.error('Failed to retrieve product:', error);
-    resp.status(500).send({ message: error.message || 'Error retrieving product' });
+    resp
+      .status(500)
+      .send({ message: error.message || 'Error retrieving product' });
   }
 };
 
 exports.createProduct = async (req, resp) => {
   const { name, price, category, count, rating } = req.body;
 
-  if (!name || price === undefined || !category || count === undefined || rating === undefined) {
+  if (
+    !name ||
+    price === undefined ||
+    !category ||
+    count === undefined ||
+    rating === undefined
+  ) {
     return resp.status(400).send({ message: 'Missing required fields' });
   }
 
   try {
-    const newProduct = await Product.create({ name, price, category, count, rating });
+    const newProduct = await Product.create({
+      name,
+      price,
+      category,
+      count,
+      rating,
+    });
     resp.status(201).send(newProduct);
   } catch (error) {
     console.error('Failed to create product:', error);
-    resp.status(500).send({ message: error.message || 'Error creating product' });
+    resp
+      .status(500)
+      .send({ message: error.message || 'Error creating product' });
   }
 };
 
@@ -42,7 +59,9 @@ exports.deleteProduct = async (req, resp) => {
     }
   } catch (error) {
     console.error('Failed to delete product:', error);
-    resp.status(500).send({ message: error.message || 'Error deleting product' });
+    resp
+      .status(500)
+      .send({ message: error.message || 'Error deleting product' });
   }
 };
 
@@ -53,7 +72,7 @@ exports.updateProduct = async (req, resp) => {
   try {
     const [updatedCount] = await Product.update(
       { name, price, category, count, rating },
-      { where: { id } }
+      { where: { id } },
     );
 
     if (updatedCount) {
@@ -64,7 +83,9 @@ exports.updateProduct = async (req, resp) => {
     }
   } catch (error) {
     console.error('Failed to update product:', error);
-    resp.status(500).send({ message: error.message || 'Error updating product' });
+    resp
+      .status(500)
+      .send({ message: error.message || 'Error updating product' });
   }
 };
 
@@ -90,6 +111,8 @@ exports.searchProducts = async (req, resp) => {
     resp.status(200).send(products);
   } catch (error) {
     console.error('Failed to search products:', error);
-    resp.status(500).send({ message: error.message || 'Error searching products' });
+    resp
+      .status(500)
+      .send({ message: error.message || 'Error searching products' });
   }
 };

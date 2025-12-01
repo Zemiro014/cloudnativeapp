@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Card, Container, Grid } from '@mui/material';
 
 export default function Body({ children }) {

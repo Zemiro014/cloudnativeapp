@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 "use client";
 
 import { AppBar, Button, IconButton, Toolbar, Typography } from

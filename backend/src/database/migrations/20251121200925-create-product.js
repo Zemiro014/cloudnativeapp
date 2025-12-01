@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -7,34 +8,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       price: {
-        type: Sequelize.NUMBER
+        type: Sequelize.DECIMAL(10, 2),
       },
       category: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       count: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       rating: {
-        type: Sequelize.NUMBER
+        type: Sequelize.FLOAT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('Product');
-  }
+    await queryInterface.dropTable('Products');
+  },
 };
