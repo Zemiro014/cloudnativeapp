@@ -17,15 +17,27 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # entrypoint: ["./docker-entrypoint.sh"]
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: my-frontend
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     NEXT_PUBLIC_BACKEND_URL: http://localhost:3001
+  my-frontend:
+    build: 
+      context: ./frontend # Aponta para a pasta do frontend
+      dockerfile: Dockerfile
+    container_name: my-frontend
+    ports:
+      - "3000:3000" # Frontend acessível em localhost:3000
+    environment:
+      # --- Configuração para o Next.js (Server Side) ---
+      # O container conversa com o container via nome do serviço
+      API_PROTOCOL: http
+      API_HOST: my-backend
+      API_PORT: 3000
+      
+      # URL para o navegador conversar com o backend (Lado Cliente)
+      NEXT_PUBLIC_API_PROTOCOL: http
+      NEXT_PUBLIC_API_HOST: localhost
+      NEXT_PUBLIC_API_PORT: 3001
+    depends_on:
+      - backend
 
   db:
     image: mysql:8.0

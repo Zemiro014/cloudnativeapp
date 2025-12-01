@@ -100,21 +100,25 @@ export default function Products() {
 function PageContentItems({ products, editProduct, deleteProduct }) {
     return (
         <TableBody>
-            {products.map((product) => (
-                <TableRow key={product.id}>
-                    <TableCell>{product.id}</TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>{product.price}</TableCell>
-                    <TableCell>{product.category}</TableCell>
-                    <TableCell>{product.count}</TableCell>
-                    <TableCell>{product.rating}</TableCell>
-                    <PageContentActions
-                        id={product.id}
-                        editProduct={editProduct}
-                        deleteProduct={deleteProduct}
-                    />
-                </TableRow>
-            ))}
+            {Array.isArray(products) ? (
+                products.map((product) => (
+                    <TableRow key={product.id}>
+                        <TableCell>{product.id}</TableCell>
+                        <TableCell>{product.name}</TableCell>
+                        <TableCell>{product.price}</TableCell>
+                        <TableCell>{product.category}</TableCell>
+                        <TableCell>{product.count}</TableCell>
+                        <TableCell>{product.rating}</TableCell>
+                        <PageContentActions
+                            id={product.id}
+                            editProduct={editProduct}
+                            deleteProduct={deleteProduct}
+                        />
+                    </TableRow>
+                ))
+            ): (
+                <p>Nenhum produto encontrado ou erro ao carregar.</p>
+            )}
         </TableBody>
     );
 }

@@ -1,7 +1,25 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
-const server = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
+const protocol = process.env.API_PROTOCOL || process.env.NEXT_PUBLIC_API_PROTOCOL || 'http';
+const host = process.env.API_HOST || process.env.NEXT_PUBLIC_API_HOST;
+const port = process.env.API_PORT || process.env.NEXT_PUBLIC_API_PORT;
+
+let server = '';
+
+if (host) {
+  server = `${protocol}://${host}`;
+  if (port && port !== '80' && port !== '443') {
+    server += `:${port}`;
+  }
+} else {
+  server = typeof window === 'undefined'
+    ? 'http://my-backend:3000' // Server-side fallback
+    : 'http://localhost:3001'; // Client-side fallback
+}
+
+console.log('🔗 Axios BaseURL:', server);
+
 axios.defaults.baseURL = server;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
