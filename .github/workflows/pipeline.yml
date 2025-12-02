@@ -1,64 +1,106 @@
-name: pipeline
+name: CI Monorepo (Docker)
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  # ====================================================
+  # JOB 1: TESTES E VERIFICAÇÃO (Em Paralelo)
+  # ====================================================
+  quality-check:
+    name: Test ${{ matrix.service }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Define quais pastas vamos testar
+        service: [backend, frontend]
+
     steps:
-      - name: Get Source Code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '20'
           cache: 'npm'
+          # Importante: Aponta para o lockfile ESPECÍFICO de cada pasta para o cache funcionar
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
 
-      - name: Install Backend Dependencies
-        run: npm --prefix backend install
+      - name: Install Dependencies
+        # Entra na pasta do serviço (backend ou frontend) e instala
+        run: |
+          cd ${{ matrix.service }}
+          npm ci
 
-      - name: Install dependencies of frontend
+      - name: Run Tests
+        # Roda os testes apenas se existir script de test no package.json daquela pasta
         run: |
-          cd frontend
-          npm install
-      - name: Build Frontend (Next.js App)
-        run: |
-          cd frontend
-          npm run build
-      - name: Test frontend
-        run: |
-          cd frontend
-          if [ -f package.json ] && grep -q "\"test\"" package.json; then
+          cd ${{ matrix.service }}
+          if grep -q "\"test\"" package.json; then
             npm test
           else
-            echo "No test to run"
+            echo "⚠️ Skipping tests: No test script found in ${{ matrix.service }}"
           fi
 
-      - name: Create artifact directory and copy files
+      - name: Run Lint
         run: |
-          mkdir -p frontend-build
-          cp -r frontend/.next frontend/package.json frontend/next.config.mjs frontend/node_modules frontend-build/
-          # Copy necessary files for a standalone deployment. For static export use "out" folder.
+          cd ${{ matrix.service }}
+          if grep -q "\"lint\"" package.json; then
+            npm run lint
+          fi
 
-      - name: Upload Frontend Build
-        uses: actions/upload-artifact@v4
-        with:
-         name: frontend-build-artifact
-         path: frontend-build/
-
-  test:
-   needs: build
-   runs-on: ubuntu-latest
-   steps:
-    - name: Run App tests
-      run: echo "Tests go here"
-
-  deploy:
-    needs: test
+  # ====================================================
+  # JOB 2: BUILD DAS IMAGENS DOCKER
+  # ====================================================
+  build-images:
+    needs: quality-check # Só tenta buildar se os testes passarem
     runs-on: ubuntu-latest
+    
     steps:
-     - name: Deploy App Frontend
-       run: echo "Deploy Frontend here"
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Configura o QEMU (caso precise de multi-arquitetura, ex: linux/arm64)
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # Configura o Docker Buildx (Essencial para Cache do GitHub Actions)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ----------------------------------------------------------------
+      # BUILD BACKEND
+      # ----------------------------------------------------------------
+      - name: Build Backend Image
+        uses: docker/build-push-action@v5
+        with:
+          # O PULO DO GATO ESTÁ AQUI:
+          context: ./backend        # O Docker vai "enxergar" apenas a pasta backend como raiz
+          file: ./backend/Dockerfile # Aponta onde está o arquivo
+          push: false               # Mude para 'true' quando configurar AWS ECR / DockerHub
+          tags: my-backend:latest
+          # Cache inteligente do GitHub Actions (acelera muito o build)
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      # ----------------------------------------------------------------
+      # BUILD FRONTEND
+      # ----------------------------------------------------------------
+      - name: Build Frontend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend       # O Docker vai "enxergar" apenas a pasta frontend como raiz
+          file: ./frontend/Dockerfile
+          push: false
+          tags: my-frontend:latest
+          # Passa args de build se necessário (geralmente para o Next.js "baker" variáveis)
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://localhost:3001
+          # Cache separado para o frontend
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
