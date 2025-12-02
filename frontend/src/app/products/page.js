@@ -46,15 +46,6 @@ export default function Products() {
 
     const router = useRouter();
 
-    const getProducts = async () => {
-        try {
-            const jsonData = await getData('products');
-            setProducts(jsonData);
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
-
     const createProduct = async () => {
         router.push(`/products/-1`);
     };
@@ -77,6 +68,16 @@ export default function Products() {
     };
 
     useEffect(() => {
+        // Definimos a função DENTRO do efeito
+        const getProducts = async () => {
+            try {
+                const jsonData = await getData('products');
+                setProducts(jsonData);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
         getProducts();
     }, []);
 
