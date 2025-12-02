@@ -28,6 +28,15 @@ jobs:
         run: |
           cd frontend
           npm run build
+      - name: Test frontend
+        run: |
+          cd frontend
+          if [ -f package.json ] && grep -q "\"test\"" package.json; then
+            npm test
+          else
+            echo "No test to run"
+          fi
+
       - name: Create artifact directory and copy files
         run: |
           mkdir -p frontend-build

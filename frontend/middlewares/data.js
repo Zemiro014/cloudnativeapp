@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
-const protocol = process.env.API_PROTOCOL || process.env.NEXT_PUBLIC_API_PROTOCOL || 'http';
+const protocol =
+  process.env.API_PROTOCOL || process.env.NEXT_PUBLIC_API_PROTOCOL || 'http';
 const host = process.env.API_HOST || process.env.NEXT_PUBLIC_API_HOST;
 const port = process.env.API_PORT || process.env.NEXT_PUBLIC_API_PORT;
 
@@ -13,9 +14,10 @@ if (host) {
     server += `:${port}`;
   }
 } else {
-  server = typeof window === 'undefined'
-    ? 'http://my-backend:3000' // Server-side fallback
-    : 'http://localhost:3001'; // Client-side fallback
+  server =
+    typeof window === 'undefined'
+      ? 'http://my-backend:3000' // Server-side fallback
+      : 'http://localhost:3001'; // Client-side fallback
 }
 
 console.log('🔗 Axios BaseURL:', server);
