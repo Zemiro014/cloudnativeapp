@@ -34,7 +34,6 @@ USER node
 COPY --from=deps --chown=node:node /app/node_modules ./node_modules
 COPY --from=deps --chown=node:node /app/package*.json ./
 
-# === A CORREÇÃO ESTÁ AQUI ===
 # Copia todo o código fonte (incluindo src/config/config.js)
 COPY --chown=node:node src ./src
 COPY --chown=node:node .sequelizerc .sequelizerc
