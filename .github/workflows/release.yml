@@ -1,0 +1,78 @@
+name: Release-Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      # Expõe as saídas para sabermos se houve release e qual a versão
+      backend--release_created: ${{ steps.release.outputs.backend--release_created }}
+      backend--version: ${{ steps.release.outputs.backend--version }}
+      frontend--release_created: ${{ steps.release.outputs.frontend--release_created }}
+      frontend--version: ${{ steps.release.outputs.frontend--version }}
+
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          # Usa o token padrão do GitHub para criar PRs e Tags
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # ====================================================
+  # BUILD & PUSH BACKEND (Só roda se houver release do backend)
+  # ====================================================
+  build-push-backend:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.backend--release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # Aqui entraria o login da AWS (comentei para exemplificar)
+      # - name: Configure AWS Credentials...
+      # - name: Login to Amazon ECR...
+
+      - name: Build and Push Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false # Mude para true quando tiver AWS configurada
+          # Tagueia com a versão exata (ex: v1.1.0) E latest
+          tags: |
+            my-backend:${{ needs.release-please.outputs.backend--version }}
+            my-backend:latest
+
+  # ====================================================
+  # BUILD & PUSH FRONTEND (Só roda se houver release do frontend)
+  # ====================================================
+  build-push-frontend:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.frontend--release_created }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Login AWS aqui...
+
+      - name: Build and Push Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false # Mude para true
+          build-args: |
+             NEXT_PUBLIC_API_URL=http://prod-url.com
+          tags: |
+            my-frontend:${{ needs.release-please.outputs.frontend--version }}
+            my-frontend:latest
