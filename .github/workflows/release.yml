@@ -54,8 +54,8 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: |
-            ${{ secrets.AWS_ECR_REGISTRY }}/my-backend:${{ needs.release-please.outputs.backend--version }}
-            ${{ secrets.AWS_ECR_REGISTRY }}/my-backend:latest
+            ${{ secrets.AWS_ECR_REGISTRY }}/cloudnativeapp-backend-repo:${{ needs.release-please.outputs.backend--version }}
+            ${{ secrets.AWS_ECR_REGISTRY }}/cloudnativeapp-backend-repo:latest
 
   # ====================================================
   # FRONTEND
@@ -88,5 +88,5 @@ jobs:
           build-args: |
              NEXT_PUBLIC_API_URL=http://localhost:3000
           tags: |
-            ${{ secrets.AWS_ECR_REGISTRY }}/my-frontend:${{ needs.release-please.outputs.frontend--version }}
-            ${{ secrets.AWS_ECR_REGISTRY }}/my-frontend:latest
+            ${{ secrets.AWS_ECR_REGISTRY }}/cloudnativeapp-frontend-repo:${{ needs.release-please.outputs.frontend--version }}
+            ${{ secrets.AWS_ECR_REGISTRY }}/cloudnativeapp-frontend-repo:latest
