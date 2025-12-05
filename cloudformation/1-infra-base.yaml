@@ -52,18 +52,14 @@ Resources:
     Properties:
       VpcId: !Ref AppVPC
       CidrBlock: 10.0.1.0/24
-      AvailabilityZone: !Select
-        - 0
-        - !GetAZs us-east-1
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref AppVPC
       CidrBlock: 10.0.2.0/24
-      AvailabilityZone: !Select
-        - 1
-        - !GetAZs us-east-1
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
 
   # Security Group for RDS
   RDSSecurityGroup:
@@ -92,7 +88,7 @@ Resources:
       AllocatedStorage: '20'
       DBInstanceClass: db.t3.micro
       Engine: mysql
-      EngineVersion: 8.0.11
+      EngineVersion: 8.0
       MasterUsername: root
       MasterUserPassword: !Ref DBPassword
       VPCSecurityGroups:
