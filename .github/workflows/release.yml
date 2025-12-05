@@ -13,23 +13,21 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      # Expõe as saídas para sabermos se houve release e qual a versão
       backend--release_created: ${{ steps.release.outputs.backend--release_created }}
       backend--version: ${{ steps.release.outputs.backend--version }}
       frontend--release_created: ${{ steps.release.outputs.frontend--release_created }}
       frontend--version: ${{ steps.release.outputs.frontend--version }}
 
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
-          # Usa o token padrão do GitHub para criar PRs e Tags
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
   # ====================================================
-  # BUILD & PUSH BACKEND (Só roda se houver release do backend)
+  # BACKEND
   # ====================================================
   build-push-backend:
     needs: release-please
@@ -38,23 +36,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # Aqui entraria o login da AWS (comentei para exemplificar)
-      # - name: Configure AWS Credentials...
-      # - name: Login to Amazon ECR...
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and Push Backend
         uses: docker/build-push-action@v5
         with:
           context: ./backend
           file: ./backend/Dockerfile
-          push: false # Mude para true quando tiver AWS configurada
-          # Tagueia com a versão exata (ex: v1.1.0) E latest
+          push: true
           tags: |
-            my-backend:${{ needs.release-please.outputs.backend--version }}
-            my-backend:latest
+            ${{ secrets.AWS_ECR_REGISTRY }}/my-backend:${{ needs.release-please.outputs.backend--version }}
+            ${{ secrets.AWS_ECR_REGISTRY }}/my-backend:latest
 
   # ====================================================
-  # BUILD & PUSH FRONTEND (Só roda se houver release do frontend)
+  # FRONTEND
   # ====================================================
   build-push-frontend:
     needs: release-please
@@ -63,16 +67,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Login AWS aqui...
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and Push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
-          push: false # Mude para true
+          push: true
+          # Valor temporário até termos o App Runner de pé
           build-args: |
-             NEXT_PUBLIC_API_URL=http://prod-url.com
+             NEXT_PUBLIC_API_URL=http://localhost:3000
           tags: |
-            my-frontend:${{ needs.release-please.outputs.frontend--version }}
-            my-frontend:latest
+            ${{ secrets.AWS_ECR_REGISTRY }}/my-frontend:${{ needs.release-please.outputs.frontend--version }}
+            ${{ secrets.AWS_ECR_REGISTRY }}/my-frontend:latest
