@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Stack 2: App Runner Services'
+Parameters:
+  ProjectName:
+    Type: String
+    Description: The name of the project
+    Default: cloudnativeapp
+  BackendECRRepositoryURI:
+    Type: String
+    Description: The URI of the backend ECR repository
+  FrontendECRRepositoryURI:
+    Type: String
+    Description: The URI of the frontend ECR repository
+  DBHost:
+    Type: String
+    Description: The database host
+  DBPassword:
+    Type: String
+    NoEcho: true
+    Description: The database admin password
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: List of private subnets. Select 2 private subnets created in stack 1
+  SecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Security group created in Stack 1.
+  IamRoleArn:
+    Type: String
+    Description: The ARN of the IAM role for App Runner services
+Resources:
+  AppRunnerVpcConnector:
+    Type: AWS::AppRunner::VpcConnector
+    Properties:
+      VpcConnectorName: !Sub ${ProjectName}-vpc-connector
+      Subnets: !Ref SubnetIds
+      SecurityGroups:
+        - !Ref SecurityGroupId
+  BackendAppRunnerService:
+    Type: AWS::AppRunner::Service
+    Properties:
+      ServiceName: !Sub ${ProjectName}-backend-service
+      SourceConfiguration:
+        AuthenticationConfiguration:
+          AccessRoleArn: !Ref IamRoleArn
+        ImageRepository:
+          ImageIdentifier: !Ref BackendECRRepositoryURI
+          ImageRepositoryType: ECR
+          ImageConfiguration:
+            Port: '3000'
+            RuntimeEnvironmentVariables:
+              - Name: NODE_ENV
+                Value: production
+              - Name: DB_HOST
+                Value: !Ref DBHost
+              - Name: DB_USER
+                Value: root
+              - Name: DB_PASS
+                Value: !Ref DBPassword
+              - Name: DB_NAME
+                Value: ecommerce
+      NetworkConfiguration:
+        EgressConfiguration:
+          EgressType: VPC
+          VpcConnectorArn: !Ref AppRunnerVpcConnector
+  FrontendAppRunnerService:
+    Type: AWS::AppRunner::Service
+    Properties:
+      ServiceName: !Sub ${ProjectName}-frontend-service
+      SourceConfiguration:
+        AuthenticationConfiguration:
+          AccessRoleArn: !Ref IamRoleArn
+        ImageRepository:
+          ImageIdentifier: !Ref FrontendECRRepositoryURI
+          ImageRepositoryType: ECR
+          ImageConfiguration:
+            Port: '3000'
+            RuntimeEnvironmentVariables:
+              - Name: NEXT_PUBLIC_API_URL
+                Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
+              - Name: NODE_ENV
+                Value: production
+              - Name: API_URL
+                Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
+Outputs:
+  BackendAppRunnerServiceURL:
+    Description: URL of the Backend App Runner Service
+    Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
+  FrontendAppRunnerServiceURL:
+    Description: URL of the Frontend App Runner Service
+    Value: !Sub http://${FrontendAppRunnerService.ServiceUrl}
