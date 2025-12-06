@@ -41,5 +41,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-# Inicia o servidor Next.js
 CMD ["node", "server.js"]
