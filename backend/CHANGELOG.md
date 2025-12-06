@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.5](https://github.com/Zemiro014/cloudnativeapp/compare/backend-v1.1.4...backend-v1.1.5) (2025-12-06)
+
+
+### Bug Fixes
+
+* **backend:** enable cors for all origins ([95d29a9](https://github.com/Zemiro014/cloudnativeapp/commit/95d29a9ea868bbe2484904339954c36385c7a76a))
+* **backend:** enable cors for all origins ([b2c7f54](https://github.com/Zemiro014/cloudnativeapp/commit/b2c7f540c2f5e031ca7a9caa7356f4e2326e9c7c))
+
 ## [1.1.4](https://github.com/Zemiro014/cloudnativeapp/compare/backend-v1.1.3...backend-v1.1.4) (2025-12-06)
 
 
