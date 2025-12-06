@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.2...frontend-v0.1.3) (2025-12-06)
+
+
+### Bug Fixes
+
+* add rewrites to next.config.mjs ([ebbbd85](https://github.com/Zemiro014/cloudnativeapp/commit/ebbbd85205d1414a4c681bc489a6c4a02350b5b2))
+* add rewrites to next.config.mjs ([ac0cf0f](https://github.com/Zemiro014/cloudnativeapp/commit/ac0cf0fc00e245b65aafc48b512482be56194a43))
+
 ## [0.1.2](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.1...frontend-v0.1.2) (2025-12-05)
 
 
