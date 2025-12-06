@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.4...frontend-v0.1.5) (2025-12-06)
+
+
+### Bug Fixes
+
+* **backend:** force redeploy ([75e67a9](https://github.com/Zemiro014/cloudnativeapp/commit/75e67a9555e165c11709b3a8dee62bb50f04d1ba))
+* **backend:** force redeploy ([1ff3a54](https://github.com/Zemiro014/cloudnativeapp/commit/1ff3a549928943a1bf59701f0560708ba70937d1))
+
 ## [0.1.4](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.3...frontend-v0.1.4) (2025-12-06)
 
 

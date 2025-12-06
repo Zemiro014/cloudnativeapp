@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/Zemiro014/cloudnativeapp/compare/backend-v1.1.2...backend-v1.1.3) (2025-12-06)
+
+
+### Bug Fixes
+
+* **backend:** force redeploy ([0c2b970](https://github.com/Zemiro014/cloudnativeapp/commit/0c2b970e71058805d94f52e0b8c93b626863cb15))
+
 ## [1.1.2](https://github.com/Zemiro014/cloudnativeapp/compare/backend-v1.1.1...backend-v1.1.2) (2025-12-05)
 
 
