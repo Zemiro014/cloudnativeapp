@@ -39,6 +39,12 @@ Resources:
     Type: AWS::AppRunner::Service
     Properties:
       ServiceName: !Sub ${ProjectName}-backend-service
+      HealthCheckConfiguration:
+        Protocol: TCP
+        Interval: 10
+        Timeout: 20           # Dá 20 segundos para responder
+        HealthyThreshold: 1
+        UnhealthyThreshold: 5 # Tenta 5 vezes (Total ~100s de tolerância)
       SourceConfiguration:
         AuthenticationConfiguration:
           AccessRoleArn: !Ref IamRoleArn

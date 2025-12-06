@@ -37,6 +37,8 @@ COPY --from=deps --chown=node:node /app/package*.json ./
 # Copia todo o código fonte (incluindo src/config/config.js)
 COPY --chown=node:node src ./src
 COPY --chown=node:node .sequelizerc .sequelizerc
+COPY --chown=node:node start.sh ./start.sh
+RUN chmod +x ./start.sh
 
 EXPOSE 3000
 
@@ -44,4 +46,4 @@ EXPOSE 3000
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 # Comando de inicialização (lembre que o migration está no docker-compose)
-CMD ["npm", "start"]
+CMD ["./start.sh"]
