@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.4](https://github.com/Zemiro014/cloudnativeapp/compare/backend-v1.1.3...backend-v1.1.4) (2025-12-06)
+
+
+### Bug Fixes
+
+* **backend:** add start.sh script to handle db migrations safely ([4d8a7ea](https://github.com/Zemiro014/cloudnativeapp/commit/4d8a7eadd209640322a7944aac4c78b5e83393c5))
+* **backend:** add start.sh script to handle db migrations safely ([e717f9d](https://github.com/Zemiro014/cloudnativeapp/commit/e717f9d3c612a95ec86f5d921d97642ce015ea21))
+
 ## [1.1.3](https://github.com/Zemiro014/cloudnativeapp/compare/backend-v1.1.2...backend-v1.1.3) (2025-12-06)
 
 
