@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.3...frontend-v0.1.4) (2025-12-06)
+
+
+### Bug Fixes
+
+* **frontend:** move proxy logic to middleware for better env support ([25ae8de](https://github.com/Zemiro014/cloudnativeapp/commit/25ae8ded9107db692f378482fec97c0934eda989))
+* **frontend:** move proxy logic to middleware for better env support ([689d3ba](https://github.com/Zemiro014/cloudnativeapp/commit/689d3ba72f071d67b0dd5b2b998ef9303e6c977f))
+
 ## [0.1.3](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.2...frontend-v0.1.3) (2025-12-06)
 
 
