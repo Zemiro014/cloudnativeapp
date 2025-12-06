@@ -62,6 +62,7 @@ Resources:
         EgressConfiguration:
           EgressType: VPC
           VpcConnectorArn: !Ref AppRunnerVpcConnector
+
   FrontendAppRunnerService:
     Type: AWS::AppRunner::Service
     Properties:
@@ -74,13 +75,26 @@ Resources:
           ImageRepositoryType: ECR
           ImageConfiguration:
             Port: '3000'
+            StartCommand: "node server.js"
             RuntimeEnvironmentVariables:
+              - Name: HOSTNAME
+                Value: "0.0.0.0"
+              - Name: PORT
+                Value: "3000"
               - Name: NEXT_PUBLIC_API_URL
                 Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
               - Name: NODE_ENV
                 Value: production
               - Name: API_URL
                 Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
+      HealthCheckConfiguration:
+        Protocol: HTTP         # Muda de TCP para HTTP (mais inteligente)
+        Path: "/"              # Testa se a página inicial carrega
+        Interval: 10           # Tenta a cada 10 segundos
+        Timeout: 20            # Dá 20 segundos para o Next.js responder (importante!)
+        HealthyThreshold: 1    # 1 acerto já considera online
+        UnhealthyThreshold: 5  # Tenta 5 vezes antes de desistir
+  
 Outputs:
   BackendAppRunnerServiceURL:
     Description: URL of the Backend App Runner Service

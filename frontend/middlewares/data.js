@@ -1,23 +1,20 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
-const protocol =
-  process.env.API_PROTOCOL || process.env.NEXT_PUBLIC_API_PROTOCOL || 'http';
-const host = process.env.API_HOST || process.env.NEXT_PUBLIC_API_HOST;
-const port = process.env.API_PORT || process.env.NEXT_PUBLIC_API_PORT;
+let server;
 
-let server = '';
-
-if (host) {
-  server = `${protocol}://${host}`;
-  if (port && port !== '80' && port !== '443') {
-    server += `:${port}`;
-  }
+if (typeof window === 'undefined') {
+  // --- SERVER SIDE (SSR / Docker) ---
+  // Aqui o código roda dentro do container do App Runner.
+  // Ele consegue ler a variável de ambiente 'API_URL' que o CloudFormation injetou em tempo de execução.
+  // Fallback: 'http://my-backend:3000' (para docker-compose local)
+  server = process.env.API_URL || 'http://my-backend:3000';
 } else {
-  server =
-    typeof window === 'undefined'
-      ? 'http://my-backend:3000' // Server-side fallback
-      : 'http://localhost:3001'; // Client-side fallback
+  // --- CLIENT SIDE (Navegador) ---
+  // O navegador não sabe a URL da AWS.
+  // Então mandamos ele bater na rota '/api-backend'.
+  // O next.config.mjs vai pegar isso e redirecionar para o backend real.
+  server = '/api-backend';
 }
 
 console.log('🔗 Axios BaseURL:', server);
