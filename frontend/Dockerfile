@@ -23,7 +23,6 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV HOSTNAME="0.0.0.0"
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Cria um usuário para não rodar como root (segurança)
@@ -41,5 +40,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-# Inicia o servidor Next.js
 CMD ["node", "server.js"]
