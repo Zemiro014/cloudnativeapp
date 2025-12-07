@@ -88,11 +88,11 @@ Resources:
               - Name: PORT
                 Value: "3000"
               - Name: NEXT_PUBLIC_API_URL
-                Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
+                Value: !Sub https://${BackendAppRunnerService.ServiceUrl}
               - Name: NODE_ENV
                 Value: production
               - Name: API_URL
-                Value: !Sub http://${BackendAppRunnerService.ServiceUrl}
+                Value: !Sub https://${BackendAppRunnerService.ServiceUrl}
       HealthCheckConfiguration:
         Protocol: HTTP         # Muda de TCP para HTTP (mais inteligente)
         Path: "/"              # Testa se a página inicial carrega
