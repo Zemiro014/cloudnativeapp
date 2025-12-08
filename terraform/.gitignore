@@ -1,0 +1,17 @@
+# Pastas locais do terraform (plugins gigantes)
+.terraform/
+.terraform.lock.hcl
+
+# Arquivos de estado (NUNCA commitar isso, contêm senhas!)
+*.tfstate
+*.tfstate.backup
+
+# Logs de crash
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Arquivos de plano de execução
+*.tfplan
