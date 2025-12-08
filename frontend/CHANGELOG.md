@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.5...frontend-v0.1.6) (2025-12-08)
+
+
+### Bug Fixes
+
+* using terraform to build aws infrastructure ([be8ae60](https://github.com/Zemiro014/cloudnativeapp/commit/be8ae60a3f034bd66304a34defea291362d1e89f))
+* using terraform to build aws infrastructure ([f7a18ab](https://github.com/Zemiro014/cloudnativeapp/commit/f7a18abebd767eecf3a15b6ff872983bca2737c6))
+
 ## [0.1.5](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.4...frontend-v0.1.5) (2025-12-06)
 
 
