@@ -5,16 +5,15 @@ export function middleware(request) {
 
   // Intercepta rotas que começam com /api-backend
   if (pathname.startsWith('/api-backend')) {
-    
     // Pega a URL correta (que vimos no log que está certa: http://my-backend:3000)
     // Se falhar, usa localhost (mas não deve falhar mais)
-    const backendBaseUrl = process.env.API_URL || 'http://localhost:3001'
-    console.log("BackendBaseUrl: ",backendBaseUrl)
+    const backendBaseUrl = process.env.API_URL || 'http://localhost:3001';
+    console.log('BackendBaseUrl: ', backendBaseUrl);
 
     // Remove o prefixo '/api-backend' para mandar a rota limpa pro backend
     // Ex: /api-backend/products vira /products
     const newPath = pathname.replace(/^\/api-backend/, '');
-    
+
     // Mantém os parâmetros de busca (?id=1&filter=abc)
     const searchParams = request.nextUrl.search;
 
