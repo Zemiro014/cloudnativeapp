@@ -1,6 +1,6 @@
 output "cluster_endpoint" {
   description = "Endpoint for EKS control plane"
-  value       = module.eks.cluster_endpoint
+  value       = aws_eks_cluster.main.endpoint # Mudou de module.eks.
 }
 
 output "rds_endpoint" {
@@ -8,7 +8,11 @@ output "rds_endpoint" {
   value       = aws_db_instance.default.address
 }
 
+output "cluster_name" {
+  value = aws_eks_cluster.main.name
+}
+
 output "configure_kubectl" {
-  description = "Comando para configurar o kubectl no seu terminal"
-  value       = "aws eks update-kubeconfig --region us-east-1 --name ${var.cluster_name}"
+  description   = "Comando para configurar o kubectl no seu terminal"
+  value         = "aws eks update-kubeconfig --region us-east-1 --name ${aws_eks_cluster.main.name}"
 }
