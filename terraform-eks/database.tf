@@ -1,12 +1,12 @@
 resource "aws_security_group" "rds_sg" {
   name          = "${var.cluster_name}-rds-sg"
   description   = "Allow accessing the RDS"
-  vpc_id        = module.vpc.vpc_id
+  vpc_id        = aws_vpc.main.id
 }
 
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name = "${var.cluster_name}-db-subnet-group"
-  subnet_ids = module.vpc.private_subnets
+  name          = "${var.cluster_name}-db-subnet-group"
+  subnet_ids    = [ aws_subnet.private_subnet_1a.id, aws_subnet.private_subnet_1b.id ]
 }
 
 resource "aws_db_instance" "default" {

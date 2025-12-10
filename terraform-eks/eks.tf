@@ -8,8 +8,8 @@ module "eks" {
   # O cluster deve ser acessível via internet (para você rodar comandos kubectl)
   cluster_endpoint_public_access = true
 
-  vpc_id        = module.vpc.vpc_id
-  subnet_ids    = module.vpc.private_subnets
+  vpc_id        = aws_vpc.main.id
+  subnet_ids    = [ aws_subnet.private_subnet_1a.id, aws_subnet.private_subnet_1b.id ]
 
   # --- WORKER NODES (As máquinas que rodam os containers) ---
   eks_managed_node_groups = {
