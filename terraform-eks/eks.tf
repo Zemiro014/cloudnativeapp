@@ -32,7 +32,7 @@ resource "aws_iam_role_policy_attachment" "cluster_policy" {
 resource "aws_eks_cluster" "main" {
   name      = var.cluster_name
   role_arn  = aws_iam_role.cluster_role.arn
-  version   = "1.28" # Kubernet version
+  version   = "1.30" # Kubernet version
 
   vpc_config {
     # O Cluster deve saber onde criar suas interfaces de rede
@@ -73,8 +73,8 @@ resource "aws_iam_openid_connect_provider" "op_conn_prov_eks" {
 resource "aws_iam_role" "node_role" {
   name = "${var.cluster_name}-node-role"
 
-  assume_role_policy = jsondecode({
-    version = "2012-10-17"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
     Statement = [{
         Action = "sts:AssumeRole"
         Effect = "Allow"
@@ -112,8 +112,8 @@ resource "aws_eks_node_group" "main" {
   
   # Onde os nodes vão rodar? NAS SUBNETS PRIVADAS!
   subnet_ids      = [
-    aws_subnet.private_1a.id,
-    aws_subnet.private_1b.id
+    aws_subnet.private_subnet_1a.id,
+    aws_subnet.private_subnet_1b.id
   ]
 
   scaling_config {
@@ -124,6 +124,9 @@ resource "aws_eks_node_group" "main" {
 
   instance_types = ["t3.medium"]
   capacity_type  = "ON_DEMAND"
+
+  version  = "1.30"       # Tem que ser igual ao do cluster
+  ami_type = "AL2_x86_64" # Garante Amazon Linux 2 (compatível com t3)
 
   # Dependências críticas para não quebrar a criação
   depends_on = [
