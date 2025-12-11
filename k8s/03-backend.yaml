@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: ecommerce
+spec:
+  replicas: 2 # Alta disponibilidade (2 containers rodando)
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          # TROQUE PELA URL DO SEU ECR (ex: 1234.dkr.ecr.../backend-repo:latest)
+          image: SUA_URL_DO_ECR_BACKEND:latest 
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: DB_USER
+              value: "root"
+            - name: DB_NAME
+              value: "ecommerce"
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASS
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_HOST
+          # O start.sh já está no Dockerfile, então não precisamos redeclarar o command aqui
+          # Ele vai rodar migrations automaticamente
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service # Nome DNS interno
+  namespace: ecommerce
+spec:
+  type: ClusterIP # Só acessível de dentro do cluster
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 80      # Porta do Serviço
+      targetPort: 3000 # Porta do Container

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: ecommerce
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          # TROQUE PELA URL DO SEU ECR (ex: 1234.dkr.ecr.../frontend-repo:latest)
+          image: SUA_URL_DO_ECR_FRONTEND:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: PORT
+              value: "3000"
+            - name: NODE_ENV
+              value: "production"
+            # MÁGICA DO KUBERNETES: O nome do serviço vira DNS
+            # Formato: http://<nome-servico>.<namespace>.svc.cluster.local
+            - name: API_URL
+              value: "http://backend-service.ecommerce.svc.cluster.local"
+            - name: NEXT_PUBLIC_API_URL
+              value: "http://backend-service.ecommerce.svc.cluster.local"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: ecommerce
+spec:
+  type: NodePort # Expõe uma porta em cada Node para o Load Balancer usar
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
