@@ -16,3 +16,13 @@ output "configure_kubectl" {
   description   = "Comando para configurar o kubectl no seu terminal"
   value         = "aws eks update-kubeconfig --region us-east-1 --name ${aws_eks_cluster.main.name}"
 }
+
+output "ecr_backend_url" {
+  description = "URL do ECR Backend para configurar no GitHub"
+  value       = aws_ecr_repository.backend.repository_url
+}
+
+output "ecr_frontend_url" {
+  description = "URL do ECR Frontend para configurar no GitHub"
+  value       = aws_ecr_repository.frontend.repository_url
+}
