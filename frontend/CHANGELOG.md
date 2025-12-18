@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.8](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.7...frontend-v0.1.8) (2025-12-18)
+
+
+### Bug Fixes
+
+* trigger release build ([22c86ff](https://github.com/Zemiro014/cloudnativeapp/commit/22c86ffb746b766a55ded06ec6c790152b60455d))
+* trigger release build ([9baa289](https://github.com/Zemiro014/cloudnativeapp/commit/9baa289eac0203f5137a59f6359967b98e3f3523))
+
 ## [0.1.7](https://github.com/Zemiro014/cloudnativeapp/compare/frontend-v0.1.6...frontend-v0.1.7) (2025-12-12)
 
 
