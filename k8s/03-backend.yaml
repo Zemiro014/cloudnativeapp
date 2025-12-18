@@ -16,7 +16,7 @@ spec:
       containers:
         - name: backend
           # TROQUE PELA URL DO SEU ECR (ex: 1234.dkr.ecr.../backend-repo:latest)
-          image: SUA_URL_DO_ECR_BACKEND:latest 
+          image: 104790431359.dkr.ecr.us-east-1.amazonaws.com/cloudnativeapp-backend-repo:latest 
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
